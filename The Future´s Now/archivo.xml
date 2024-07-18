@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" stanalone="no"?>
+<datos>
+    <nombreDocumento>Información de usuarios</nombreDocumento>
+    <fecha>09/10/2023</fecha>
+    <usuarios>
+        <usuario id="1">
+            <nip></nip>
+            <nombres></nombres>
+            <apellidos></apellidos>
+            <fechaNacimiento></fechaNacimiento>
+            <genero></genero>
+        </usuario>
+        <usuario id="2">
+            <nip></nip>
+            <nombres></nombres>
+            <apellidos></apellidos>
+            <fechaNacimiento></fechaNacimiento>
+            <genero></genero>
+        </usuario>
+        <usuario id="3">
+            <nip></nip>
+            <nombres></nombres>
+            <apellidos></apellidos>
+            <fechaNacimiento></fechaNacimiento>
+            <genero></genero>
+        </usuario>
+        <usuario id="4">
+            <nip></nip>
+            <nombres></nombres>
+            <apellidos></apellidos>
+            <fechaNacimiento></fechaNacimiento>
+            <genero></genero>
+        </usuario>
+        <usuario id="5">
+            <nip></nip>
+            <nombres></nombres>
+            <apellidos></apellidos>
+            <fechaNacimiento></fechaNacimiento>
+            <genero></genero>
+        </usuario>
+        <usuario id="7">
+            <nip></nip>
+            <nombres></nombres>
+            <apellidos></apellidos>
+            <fechaNacimiento></fechaNacimiento>
+            <genero></genero>
+        </usuario>
+        <usuario id="8">
+            <nip></nip>
+            <nombres></nombres>
+            <apellidos></apellidos>
+            <fechaNacimiento></fechaNacimiento>
+            <genero></genero>
+        </usuario>
+    </usuarios>
+</datos>
