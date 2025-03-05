@@ -8,47 +8,56 @@
 <body>
     <style>
         body {
-        background-color: black;
-        color: limegreen;
         font-family: "Courier New", monospace;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
+        background-color: #000;
+        color: #0f0;
+        padding: 20px;
+        text-align: left;
     }
 
-    .terminal {
-        width: 80%;
-        max-width: 600px;
-        background-color: black;
-        padding: 10px;
-        border-radius: 5px;
-        border: 2px solid limegreen;
-    }
-
-    #output {
-        height: 300px;
-        overflow-y: auto;
-    }
-
-    .input-line {
-        display: flex;
-    }
-
-    .prompt {
-        margin-right: 5px;
-    }
-
-    input {
-        background: none;
-        border: none;
-        color: limegreen;
-        font-family: inherit;
-        font-size: 16px;
+    #terminal {
         width: 100%;
-        outline: none;
+        max-width: 600px;
+        height: 400px;
+        border: 2px solid #0f0;
+        padding: 10px;
+        overflow-y: auto;
+        margin: 0 auto;
+        background-color: #000;
+        font-size: 18px;
+        white-space: pre-line;
     }
+
+    /* Estilos para el input */
+    #commandInput {
+        width: calc(100% - 20px);
+        max-width: 600px;
+        padding: 8px;
+        margin-top: 10px;
+        border: 1px solid #0f0;
+        background-color: #000;
+        color: #0f0;
+        font-size: 18px;
+        font-family: "Courier New", monospace;
+    }
+
+    /* Mejoras para móviles */
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+
+        #terminal {
+            height: 300px;
+            font-size: 16px;
+        }
+
+        #commandInput {
+            font-size: 16px;
+            padding: 6px;
+        }
+    }
+
 
     </style>
     <div class="terminal">
