@@ -53,6 +53,15 @@
         outline: none;
     }
 
+    #output {
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end; /* Empuja el contenido hacia abajo */
+        max-height: 80%; /* Evita que el output se desborde */
+    }
+
     </style>
     <div class="terminal">
         <div id="output"></div>
@@ -205,6 +214,36 @@
             askQuestion();
         }
     });
+
+    </script>
+    <script>
+        function scrollToBottom() {
+        outputDiv.scrollTop = outputDiv.scrollHeight;
+    }
+
+    function askQuestion() {
+        const questions = [
+            "¡Hola! ¿Cuál es tu nombre?",
+            "¿Cuántos años tienes?",
+            "¿Eres Hombre o Mujer?",
+            "¿Estudias programación? (Sí / No)",
+            "¿Tienes un objetivo claro en la vida? (Sí / No)"
+        ];
+
+        if (step < questions.length) {
+            outputDiv.innerHTML += `<p>${questions[step]}</p>`;
+            scrollToBottom(); // Baja automáticamente después de agregar texto
+        } else {
+            generateMotivation();
+        }
+    }
+
+    function processAnswer(answer) {
+        outputDiv.innerHTML += `<p>> ${answer}</p>`; // Mostrar la respuesta del usuario
+        scrollToBottom(); // Asegurar que se vea la última respuesta
+
+        // Continuar con la lógica...
+    }
 
     </script>
 </body>
