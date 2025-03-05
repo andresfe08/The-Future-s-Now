@@ -2,9 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Terminal JS</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
@@ -12,25 +18,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             height: 100vh;
             padding: 0;
             margin: 0;
+            overflow: hidden;
         }
 
         #terminal {
             width: 90%;
             max-width: 600px;
-            height: 75vh;
+            height: 70vh;
             border: 2px solid #0f0;
             padding: 10px;
             overflow-y: auto;
             background-color: #000;
             font-size: 18px;
-            white-space: pre-line;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            scrollbar-width: thin;
+            scrollbar-color: #0f0 #000;
         }
 
         #inputContainer {
@@ -38,13 +45,14 @@
             max-width: 600px;
             display: flex;
             align-items: center;
-            margin-top: 10px;
+            margin-top: auto;
+            background: #000;
+            padding: 10px 0;
         }
 
         #prompt {
             color: #0f0;
             font-size: 18px;
-            font-family: "Courier New", monospace;
             margin-right: 5px;
         }
 
@@ -62,13 +70,14 @@
 
         @media (max-width: 600px) {
             #terminal {
-                height: 70vh;
+                height: 60vh;
                 font-size: 16px;
                 width: 95%;
             }
 
             #inputContainer {
                 width: 95%;
+                padding-bottom: 10px;
             }
 
             #commandInput {
@@ -85,7 +94,7 @@
 <body>
 
     <div id="terminal">
-        <p>💡 Responde algunas preguntas y recibe un mensaje motivacional. Escribe "reiniciar" para comenzar de nuevo.</p>
+        <p>💡 Responde algunas preguntas y recibe un mensaje motivacional. Escribe "reiniciar" para empezar de nuevo.</p>
         <br>
     </div>
 
@@ -133,6 +142,7 @@
 
                 if (step < questions.length) {
                     terminalDiv.innerHTML += `<p>> ${questions[step]}</p>`;
+                    scrollToBottom();
                 } else {
                     generateMotivation();
                 }
@@ -176,7 +186,7 @@
 
             function generateMotivation() {
                 let mensajes = {
-                    hombre: "La vida es un constante desafío, pero cada obstáculo que superas te hace más fuerte. No dejes que el miedo al fracaso te detenga. Aprende, crece y sigue adelante. El mundo necesita personas con determinación como tú.",
+                    hombre: "La vida es un desafío constante, pero cada obstáculo superado te hace más fuerte. No dejes que el miedo al fracaso te detenga. Aprende, crece y sigue adelante. El mundo necesita personas con determinación como tú.",
                     mujer: "Nunca subestimes el poder de tu voz y tu determinación. Cada paso que das hacia tu meta cuenta. No importa cuán difícil parezca el camino, sigue avanzando con confianza. ¡El futuro es tuyo!",
                     profesor: "Tu impacto va más allá del aula. Cada palabra que dices y cada enseñanza que compartes deja una huella en quienes te escuchan. No olvides que estás moldeando el futuro con tu dedicación y pasión.",
                     profesora: "Educar es un arte, y tú eres una artista. Con paciencia y amor, inspiras a generaciones futuras. Sigue enseñando con el mismo entusiasmo, porque cada estudiante que toca tu vida lleva una parte de tu legado."
@@ -199,6 +209,18 @@
                 mensajeFinal += `\n\n🔄 Escribe "reiniciar" para volver a intentarlo.`;
 
                 terminalDiv.innerHTML += `<p>${mensajeFinal}</p>`;
+                scrollToBottom();
+            }
+
+            function scrollToBottom() {
+                terminalDiv.scrollTop = terminalDiv.scrollHeight;
+            }
+
+            function resetTerminal() {
+                terminalDiv.innerHTML = "<p>💡 Responde algunas preguntas y recibe un mensaje motivacional. Escribe 'reiniciar' para empezar de nuevo.</p><br>";
+                step = 0;
+                userData = {};
+                askQuestion();
             }
         });
     </script>
