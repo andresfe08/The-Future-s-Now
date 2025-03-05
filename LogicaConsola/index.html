@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal JS</title>
+</head>
+<body>
+    <style>
+        body {
+        background-color: black;
+        color: limegreen;
+        font-family: "Courier New", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .terminal {
+        width: 80%;
+        max-width: 600px;
+        background-color: black;
+        padding: 10px;
+        border-radius: 5px;
+        border: 2px solid limegreen;
+    }
+
+    #output {
+        height: 300px;
+        overflow-y: auto;
+    }
+
+    .input-line {
+        display: flex;
+    }
+
+    .prompt {
+        margin-right: 5px;
+    }
+
+    input {
+        background: none;
+        border: none;
+        color: limegreen;
+        font-family: inherit;
+        font-size: 16px;
+        width: 100%;
+        outline: none;
+    }
+
+    </style>
+    <div class="terminal">
+        <div id="output"></div>
+        <div class="input-line">
+            <span class="prompt">>></span>
+            <input type="text" id="commandInput" autofocus>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const inputField = document.getElementById("commandInput");
+        const outputDiv = document.getElementById("output");
+
+        let step = 0;
+        let userData = {
+            nombre: "",
+            edad: 0,
+            genero: "",
+            estudiasProgramacion: "",
+            tienesObjetivo: ""
+        };
+
+        askQuestion();
+
+        inputField.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                const answer = inputField.value.trim().toLowerCase();
+                if (answer === "reiniciar") {
+                    resetTerminal();
+                    return;
+                }
+                processAnswer(answer);
+                inputField.value = "";
+            }
+        });
+
+        function askQuestion() {
+            const questions = [
+                "¡Hola! ¿Cuál es tu nombre?",
+                "¿Cuántos años tienes?",
+                "¿Eres Hombre o Mujer?",
+                "¿Estudias programación? (Sí / No)",
+                "¿Tienes un objetivo claro en la vida? (Sí / No)"
+            ];
+
+            if (step < questions.length) {
+                outputDiv.innerHTML += `<p>${questions[step]}</p>`;
+            } else {
+                generateMotivation();
+            }
+        }
+
+        function processAnswer(answer) {
+            if (step === 0) {
+                userData.nombre = answer;
+            } else if (step === 1) {
+                let edad = parseInt(answer);
+                if (isNaN(edad) || edad < 16 || edad > 99) {
+                    outputDiv.innerHTML += `<p>Por favor, ingresa una edad válida entre 16 y 99 años.</p>`;
+                    return;
+                }
+                userData.edad = edad;
+            } else if (step === 2) {
+                let genero = answer;
+                if (genero !== "hombre" && genero !== "mujer") {
+                    outputDiv.innerHTML += `<p>Por favor, ingresa 'Hombre' o 'Mujer'.</p>`;
+                    return;
+                }
+                userData.genero = genero;
+
+                // Ajustar si es profesor/a
+                if (userData.edad > 25) {
+                    userData.genero = genero === "hombre" ? "profesor" : "profesora";
+                }
+            } else if (step === 3 || step === 4) {
+                if (!["si", "sí", "s", "no", "n"].includes(answer)) {
+                    outputDiv.innerHTML += `<p>Por favor, responde 'Sí' o 'No'.</p>`;
+                    return;
+                }
+                let respuestaNormalizada = answer.startsWith("s") ? "sí" : "no";
+
+                if (step === 3) userData.estudiasProgramacion = respuestaNormalizada;
+                if (step === 4) userData.tienesObjetivo = respuestaNormalizada;
+            }
+
+            step++;
+            askQuestion();
+        }
+
+        function generateMotivation() {
+            let mensajes = {
+                hombre: [
+                    "Nunca subestimes tu potencial. Cada paso que das te acerca a tu meta. ¡Sigue adelante!",
+                    "La disciplina y la perseverancia son la clave. Mantén la vista en el objetivo y nunca te rindas.",
+                    "El éxito no es cuestión de suerte, sino de esfuerzo y constancia. ¡Tú puedes lograrlo!"
+                ],
+                mujer: [
+                    "Eres más fuerte de lo que crees. Confía en tu talento y en tu capacidad para cambiar el mundo.",
+                    "Nunca permitas que alguien te diga que no puedes. Sigue aprendiendo y creciendo cada día.",
+                    "El futuro pertenece a quienes creen en la belleza de sus sueños. ¡Sigue adelante con confianza!"
+                ],
+                profesor: [
+                    "Gracias por tu esfuerzo en la enseñanza. Estás formando el futuro con cada palabra que dices.",
+                    "Ser profesor es una vocación de paciencia y dedicación. ¡Tus alumnos te recordarán siempre!",
+                    "Enseñar es dejar una huella en cada mente que toca. ¡Gracias por tu trabajo invaluable!"
+                ],
+                profesora: [
+                    "Gracias por su dedicación y paciencia. Su labor inspira a cada estudiante a ser mejor.",
+                    "Un maestro deja huella en el corazón de sus alumnos. ¡Gracias por su esfuerzo y compromiso!",
+                    "Educar es sembrar semillas de futuro. ¡Gracias por todo lo que hace!"
+                ]
+            };
+
+            let mensajeAleatorio = obtenerMensajeAleatorio(userData.genero, mensajes);
+
+            let mensajeFinal = `\n>> ${userData.nombre}, recuerda: ${mensajeAleatorio}\n`;
+
+            if (userData.estudiasProgramacion === "sí") {
+                mensajeFinal += "Aprender a programar es una de las mejores decisiones que puedes tomar. ¡Sigue adelante!";
+            } else {
+                mensajeFinal += "No importa el camino que elijas, lo importante es dar lo mejor de ti.";
+            }
+
+            if (userData.tienesObjetivo === "sí") {
+                mensajeFinal += " Tener un objetivo claro es un gran paso. Ahora solo es cuestión de esfuerzo y constancia.";
+            } else {
+                mensajeFinal += " Si aún no tienes un objetivo, no te preocupes. Explora, aprende y descubre tu pasión.";
+            }
+
+            mensajeFinal += `\n\nEscribe "reiniciar" para volver a intentarlo.`;
+
+            outputDiv.innerHTML += `<p>${mensajeFinal}</p>`;
+        }
+
+        function obtenerMensajeAleatorio(genero, mensajes) {
+            let opciones = mensajes[genero];
+            return opciones[Math.floor(Math.random() * opciones.length)];
+        }
+
+        function resetTerminal() {
+            outputDiv.innerHTML = "";
+            step = 0;
+            userData = {
+                nombre: "",
+                edad: 0,
+                genero: "",
+                estudiasProgramacion: "",
+                tienesObjetivo: ""
+            };
+            askQuestion();
+        }
+    });
+
+    </script>
+</body>
+</html>
