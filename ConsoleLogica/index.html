@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal JS</title>
+</head>
+<body>
+    <style>
+        body {
+        background-color: black;
+        color: limegreen;
+        font-family: "Courier New", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .terminal {
+        width: 80%;
+        max-width: 600px;
+        background-color: black;
+        padding: 10px;
+        border-radius: 5px;
+        border: 2px solid limegreen;
+    }
+
+    #output {
+        height: 300px;
+        overflow-y: auto;
+    }
+
+    .input-line {
+        display: flex;
+    }
+
+    .prompt {
+        margin-right: 5px;
+    }
+
+    input {
+        background: none;
+        border: none;
+        color: limegreen;
+        font-family: inherit;
+        font-size: 16px;
+        width: 100%;
+        outline: none;
+    }
+
+    </style>
+    <div class="terminal">
+        <div id="output"></div>
+        <div class="input-line">
+            <span class="prompt">>></span>
+            <input type="text" id="commandInput" autofocus>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const inputField = document.getElementById("commandInput");
+        const outputDiv = document.getElementById("output");
+
+        let step = 0; 
+        let userData = {
+            nombre: "",
+            edad: 0,
+            genero: ""
+        };
+
+        askQuestion();
+
+        inputField.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                const answer = inputField.value.trim();
+                processAnswer(answer);
+                inputField.value = "";
+            }
+        });
+
+        function askQuestion() {
+            const questions = [
+                "¡Hola! ¿Cuál es tu nombre?",
+                "¿Cuántos años tienes?",
+                "¿Eres Hombre o Mujer?"
+            ];
+
+            if (step < questions.length) {
+                outputDiv.innerHTML += `<p>${questions[step]}</p>`;
+            } else {
+                generateMotivation();
+            }
+        }
+
+        function processAnswer(answer) {
+            if (step === 0) {
+                userData.nombre = answer;
+            } else if (step === 1) {
+                let edad = parseInt(answer);
+                if (isNaN(edad) || edad < 16 || edad > 99) {
+                    outputDiv.innerHTML += `<p>Por favor, ingresa una edad válida entre 16 y 99 años.</p>`;
+                    return;
+                }
+                userData.edad = edad;
+            } else if (step === 2) {
+                let genero = answer.toLowerCase();
+                if (genero !== "hombre" && genero !== "mujer" && genero !== "profesora") {
+                    outputDiv.innerHTML += `<p>Por favor, ingresa 'Hombre', 'Mujer' o 'Profesora'.</p>`;
+                    return;
+                }
+                userData.genero = genero;
+            }
+
+            step++;
+            askQuestion();
+        }
+
+        function generateMotivation() {
+            let mensaje = "";
+
+            if (userData.genero === "profesora") {
+                mensaje = `Profesora ${userData.nombre}, gracias por su paciencia y esfuerzo. Su conocimiento cambia vidas. ¡Siga inspirando a sus estudiantes!`;
+            } else {
+                if (userData.edad >= 16 && userData.edad <= 18) {
+                    mensaje = `¡${userData.nombre}, a tu edad las oportunidades están apenas comenzando! Cree en ti mismo y nunca dejes de aprender.`;
+                } else if (userData.edad >= 19 && userData.edad <= 22) {
+                    mensaje = `¡${userData.nombre}, estás en un momento clave de tu vida! Aprovecha cada oportunidad, confía en tus habilidades y nunca dejes de soñar.`;
+                } else {
+                    mensaje = `¡${userData.nombre}, cada día es una nueva oportunidad para crecer! La edad no define lo que puedes lograr.`;
+                }
+            }
+
+            outputDiv.innerHTML += `<p>${mensaje}</p>`;
+        }
+    });
+
+    </script>
+</body>
+</html>
