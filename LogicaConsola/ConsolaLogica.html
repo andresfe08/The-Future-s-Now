@@ -4,68 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminal JS</title>
-</head>
-<body>
     <style>
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
             color: #0f0;
-            padding: 20px;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
         }
 
         #terminal {
-            width: 100%;
+            width: 90%;
             max-width: 600px;
-            height: 400px;
+            height: 75vh;
             border: 2px solid #0f0;
             padding: 10px;
             overflow-y: auto;
-            margin: 0 auto;
             background-color: #000;
             font-size: 18px;
             white-space: pre-line;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        #inputContainer {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        #prompt {
+            color: #0f0;
+            font-size: 18px;
+            font-family: "Courier New", monospace;
+            margin-right: 5px;
         }
 
         #commandInput {
-            width: calc(100% - 20px);
-            max-width: 600px;
-            padding: 8px;
-            margin-top: 10px;
+            flex-grow: 1;
+            padding: 10px;
             border: 1px solid #0f0;
             background-color: #000;
             color: #0f0;
             font-size: 18px;
             font-family: "Courier New", monospace;
+            text-align: left;
+            outline: none;
         }
 
-        /* Estilos para móviles */
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
+            #terminal {
+                height: 70vh;
+                font-size: 16px;
+                width: 95%;
             }
 
-            #terminal {
-                height: 300px;
-                font-size: 16px;
+            #inputContainer {
+                width: 95%;
             }
 
             #commandInput {
                 font-size: 16px;
-                padding: 6px;
+                padding: 8px;
+            }
+
+            #prompt {
+                font-size: 16px;
             }
         }
     </style>
+</head>
+<body>
 
     <div id="terminal">
         <p>Bienvenido a la Terminal de Lógica en JS</p>
-        <p>📌 La lógica es la base de la programación. Este pequeño programa te hará algunas preguntas y te dará un mensaje motivacional basado en tus respuestas.</p>
-        <p>💡 Responde con claridad y sigue las instrucciones. Si deseas reiniciar, escribe "reiniciar".</p>
+        <p>📌 La lógica es la base de la programación. Responde algunas preguntas y recibe un mensaje motivacional.</p>
+        <p>💡 Si deseas reiniciar, escribe "reiniciar".</p>
         <br>
     </div>
 
-    <input type="text" id="commandInput" autofocus>
+    <div id="inputContainer">
+        <span id="prompt">></span>
+        <input type="text" id="commandInput" autofocus>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -117,19 +146,18 @@
                 } else if (step === 1) {
                     let edad = parseInt(answer);
                     if (isNaN(edad) || edad < 16 || edad > 99) {
-                        terminalDiv.innerHTML += `<p>⚠️ Por favor, ingresa una edad válida entre 16 y 99 años.</p>`;
+                        terminalDiv.innerHTML += `<p>⚠️ Ingresa una edad válida entre 16 y 99 años.</p>`;
                         return;
                     }
                     userData.edad = edad;
                 } else if (step === 2) {
                     let genero = answer;
                     if (genero !== "hombre" && genero !== "mujer") {
-                        terminalDiv.innerHTML += `<p>⚠️ Por favor, ingresa 'Hombre' o 'Mujer'.</p>`;
+                        terminalDiv.innerHTML += `<p>⚠️ Ingresa 'Hombre' o 'Mujer'.</p>`;
                         return;
                     }
                     userData.genero = genero;
 
-                    // Si es mayor de 25, se considera profesor/a
                     if (userData.edad > 25) {
                         userData.genero = genero === "hombre" ? "profesor" : "profesora";
                     }
@@ -150,58 +178,29 @@
 
             function generateMotivation() {
                 let mensajes = {
-                    hombre: [
-                        "Nunca subestimes tu potencial. Cada paso que das te acerca a tu meta. ¡Sigue adelante!",
-                        "La disciplina y la perseverancia son la clave. Mantén la vista en el objetivo y nunca te rindas.",
-                        "El éxito no es cuestión de suerte, sino de esfuerzo y constancia. ¡Tú puedes lograrlo!"
-                    ],
-                    mujer: [
-                        "Eres más fuerte de lo que crees. Confía en tu talento y en tu capacidad para cambiar el mundo.",
-                        "Nunca permitas que alguien te diga que no puedes. Sigue aprendiendo y creciendo cada día.",
-                        "El futuro pertenece a quienes creen en la belleza de sus sueños. ¡Sigue adelante con confianza!"
-                    ],
-                    profesor: [
-                        "Gracias por tu esfuerzo en la enseñanza. Estás formando el futuro con cada palabra que dices.",
-                        "Ser profesor es una vocación de paciencia y dedicación. ¡Tus alumnos te recordarán siempre!",
-                        "Enseñar es dejar una huella en cada mente que toca. ¡Gracias por tu trabajo invaluable!"
-                    ],
-                    profesora: [
-                        "Gracias por su dedicación y paciencia. Su labor inspira a cada estudiante a ser mejor.",
-                        "Un maestro deja huella en el corazón de sus alumnos. ¡Gracias por su esfuerzo y compromiso!",
-                        "Educar es sembrar semillas de futuro. ¡Gracias por todo lo que hace!"
-                    ]
+                    hombre: "La vida es un constante desafío, pero cada obstáculo que superas te hace más fuerte. No dejes que el miedo al fracaso te detenga. Aprende, crece y sigue adelante. El mundo necesita personas con determinación como tú.",
+                    mujer: "Nunca subestimes el poder de tu voz y tu determinación. Cada paso que das hacia tu meta cuenta. No importa cuán difícil parezca el camino, sigue avanzando con confianza. ¡El futuro es tuyo!",
+                    profesor: "Tu impacto va más allá del aula. Cada palabra que dices y cada enseñanza que compartes deja una huella en quienes te escuchan. No olvides que estás moldeando el futuro con tu dedicación y pasión.",
+                    profesora: "Educar es un arte, y tú eres una artista. Con paciencia y amor, inspiras a generaciones futuras. Sigue enseñando con el mismo entusiasmo, porque cada estudiante que toca tu vida lleva una parte de tu legado."
                 };
 
-                let mensajeAleatorio = obtenerMensajeAleatorio(userData.genero, mensajes);
-                let mensajeFinal = `\n>> ${userData.nombre}, recuerda: ${mensajeAleatorio}\n`;
+                let mensajeFinal = `\n>> ${userData.nombre}, recuerda: ${mensajes[userData.genero]}\n`;
 
                 if (userData.estudiasProgramacion === "sí") {
-                    mensajeFinal += "📌 Aprender a programar es una de las mejores decisiones que puedes tomar. ¡Sigue adelante!";
+                    mensajeFinal += "💻 La programación es una habilidad poderosa. No te rindas ante los errores, son solo parte del aprendizaje. Sigue practicando y construyendo cosas asombrosas.";
                 } else {
-                    mensajeFinal += "📌 No importa el camino que elijas, lo importante es dar lo mejor de ti.";
+                    mensajeFinal += "🎯 No importa cuál sea tu camino, lo importante es dar lo mejor de ti. Sigue aprendiendo y creciendo cada día.";
                 }
 
                 if (userData.tienesObjetivo === "sí") {
-                    mensajeFinal += " Tener un objetivo claro es un gran paso. Ahora solo es cuestión de esfuerzo y constancia.";
+                    mensajeFinal += " Tener un objetivo claro te da dirección y propósito. Ahora solo necesitas perseverancia y esfuerzo para alcanzarlo.";
                 } else {
-                    mensajeFinal += " Si aún no tienes un objetivo, no te preocupes. Explora, aprende y descubre tu pasión.";
+                    mensajeFinal += " No te preocupes si aún no tienes un objetivo definido. La vida es un viaje de descubrimiento, explora nuevas pasiones y oportunidades.";
                 }
 
                 mensajeFinal += `\n\n🔄 Escribe "reiniciar" para volver a intentarlo.`;
 
                 terminalDiv.innerHTML += `<p>${mensajeFinal}</p>`;
-            }
-
-            function obtenerMensajeAleatorio(genero, mensajes) {
-                let opciones = mensajes[genero];
-                return opciones[Math.floor(Math.random() * opciones.length)];
-            }
-
-            function resetTerminal() {
-                terminalDiv.innerHTML = `<p>📌 Reiniciando...</p>`;
-                step = 0;
-                userData = { nombre: "", edad: 0, genero: "", estudiasProgramacion: "", tienesObjetivo: "" };
-                askQuestion();
             }
         });
     </script>
